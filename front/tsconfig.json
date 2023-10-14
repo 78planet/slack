@@ -1,15 +1,55 @@
 {
+  /*  TypeScript 컴파일러의 옵션들을 지정하는 속성 */
   "compilerOptions": {
+    
+    /* 모든 import에 대한 네임스페이스 객체 생성을 통해 CommonJS와 ES 모듈 간의 상호 운용성을 제공 
+    // esModuleInterop: true일 경우 가능함
+    import React from "react";
+
+    // false인 경우 다음과 같이 import 해야 함
+    import * from React from "react";
+    */
     "esModuleInterop": true,
+
+    /*컴파일된 파일 디렉터리에 .js.map 파일이 만들어진다.
+    이 소스맵 파일은 변환된 js코드가 ts의 어디에 해당하는 지를 알려준다. 디버깅 작업에 매우 유용하다.
+    실제로 타입스크립트 프로젝트를 배포하고, 브라우저에서 개발자모드를 이용해 source 탭에 보면, 
+      브라우저는 js만 인식하지만 매핑 파일에 의해 ts 파일을 인식하는걸 볼 수 있다.
+    이렇게 직접 타입스크립트 파일에 잘못된 부분이 있으면 직접 디버깅 할 수 있다.*/
     "sourceMap": true,
+
+    /* 어떠한 버전의 JavaScript 코드로 컴파일 할지 지정한다. 
+    대부분의 브라우저는 모든 ES6를 지원하기 때문에, 보통 ES6로 놓고 사용되는 편이다. */
+    "target": "ES6",
+
+    /* lib 옵션은 컴파일에 필요한 JavaScript 내장 라이브러리를 지정할 수 있다 */
     "lib": ["ES2020", "DOM"],
+
+    /*.tsx 확장자의 컴파일 결과 JSX 코드를 어떻게 컴파일할지 결정한다.
+      react : .js 파일로 컴파일 된다.*/
     "jsx": "react",
+
+    /*자바스크립트 파일간 import 문법을 구현할 때 어떤 문법을 쓸지 정하는 곳입니다.
+      commonjs는 require 문법
+      es2015, esnext는 import 문법을 사용합니다. */
     "module": "esnext",
-    "moduleResolution": "Node",
-    "target": "es5",
+    "moduleResolution": "Node", // 모듈 분석 방법 설정
+
+    /* 타입스크립트의 각종 타입 체킹 동작을 전부 활성화한다.
+       사실상 이 옵션을 쓰지않는것은 곧 타입스크립트를 쓰지 않는 다는 것과 같다. 따라서 기본으로 활성화 되어 있다.*/
     "strict": true,
-    "resolveJsonModule": true,
+    "resolveJsonModule": true, // ts 파일에서 json imoprt 허용
+
+    /*명시적이지 않은 any 타입이 지정될 경우 표현식과 선언에 사용하면 에러 발생 시킨다.
+      예를들어 타입스크립트가 추론을 실패해서 any로 지정되면 빨간줄이 뜨게 되는데, 이때 직접 any라고 지정해야 빨간줄이 사라진다.
+      위의 strict 옵션을 true로 하면 noImplicitAny 옵션도 자동으로 true가 되서 나타나는 현상인데, 
+        이때 이 옵션을 false로 지정하면 any 타입을 명시적으로 지정 안해도 오류가 사라지게 된다. */
+    "noImplicitAny": true,  // any라는 타입이 의도치않게 발생할 경우 에러를 띄워주는 설정
+    "strictNullChecks": true, // null, undefined 타입에 이상한 조작하면 에러를 띄우는 설정
+
     "baseUrl": ".",
+    /* 'baseUrl'을 기준으로 상대 위치로 가져오기를 다시 매핑하는 항목 설정 
+        import 구문의 모듈 해석 시에 기준이 되는 경로를 지정한다.*/
     "paths": {
       "@hooks/*": ["hooks/*"],
       "@components/*": ["components/*"],
@@ -17,13 +57,15 @@
       "@pages/*": ["pages/*"],
       "@utils/*": ["utils/*"],
       "@typings/*": ["typings/*"]
-    }
+    }    
   },
+
+  /* webpack은 ts를 인식 못하기 때문에 webpack이 밑에껄 사용해서 js 바꿈. */
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs",
       "moduleResolution": "Node",
-      "target": "es5",
+      "target": "es6",
       "esModuleInterop": true
     }
   }
